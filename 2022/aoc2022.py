@@ -135,27 +135,52 @@ def day4func(dat):
         one = l[0].split('-')
         two = l[1].split('-')
         if int(one[0]) >= int(two[0]) and int(one[1]) <= int(two[1]):
-            #print('TRUE: ' + l[0] +':' + l[1] + ': r1')
             counter += 1
         elif int(two[0]) >= int(one[0]) and int(two[1]) <= int(one[1]):
-            #print('TRUE: ' + l[0] +': '+ l[1] + ': r2')
             counter += 1
         #else:
             #print('FALSE: ' + l[0] +': '+ l[1])
             
         if int(one[0]) >= int(two[0]) and int(one[0]) <= int(two[1]):
             counter2 +=1
-            print('TRUE 1:' +one[0] + ', '+ two[0] + '-'+two[1])
         elif int(one[1]) >= int(two[0]) and int(one[1]) <= int(two[1]):
             counter2 += 1
-            print('TRUE 2:' +one[1] + ', ' +two[0] + '-'+two[1])
         elif int(two[1]) >= int(one[0]) and int(two[1]) <= int(one[1]):
             counter2 += 1
-            print('TRUE 3:' +two[1] + ', ' +one[0] + '-'+one[1])
         elif int(two[0]) >= int(one[0]) and int(two[0]) <= int(one[1]):
             counter2 += 1
-            print('TRUE 4:' +two[0] + ', ' +one[0] + '-'+one[1])
-        else:
-            print('FALSE: ' + l[0] + ': ' + l[1])
+        #else:
+        #    print('FALSE: ' + l[0] + ': ' + l[1])
             
     print(counter2)
+    
+def day5func(dat):
+    start=dat[0:8]    
+    inst=dat[10:]
+    locs = [1,5,9,13,17,21,25,29,33]
+    rows=[]
+    for j in locs:
+        nr = [item[j] for item in start]
+        #print(nr)
+        newrow=list(filter(lambda x: x != ' ', nr))
+        newrow.reverse()
+        #print(newrow)
+        rows.append(newrow)
+        
+    def move(rows, rcol, ct, ncol):
+
+        moving=rows[rcol][-ct:]
+        moving#.reverse()
+        rows[rcol]=rows[rcol][:-ct]
+        [rows[ncol].append(x) for x in moving]
+        if l <10:
+            print(rows[ncol])
+            print('')
+        
+        return rows
+    for i in inst:
+        i.replace('\n', '')
+        irow = i.split(' ')
+        rows = move(rows, int(irow[3])-1, int(irow[1]), int(irow[5])-1)
+    return rows
+        
