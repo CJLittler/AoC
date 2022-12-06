@@ -173,9 +173,6 @@ def day5func(dat):
         moving#.reverse()
         rows[rcol]=rows[rcol][:-ct]
         [rows[ncol].append(x) for x in moving]
-        if l <10:
-            print(rows[ncol])
-            print('')
         
         return rows
     for i in inst:
@@ -184,3 +181,22 @@ def day5func(dat):
         rows = move(rows, int(irow[3])-1, int(irow[1]), int(irow[5])-1)
     return rows
         
+def day6func(dat,part):
+    if part == 1:
+        size = 4
+    elif part == 2:
+        size = 14
+    def find(data,x,size):
+        y=0
+        if len(set(data[x:x+size])) == size:
+            y=x
+        if y != 0:
+            return y + size # size for hitting end of line
+    def checkvalid(n):
+        if n > 0:
+            return True
+        else:
+            return False
+    out = [int(find(dat[0],x,size) or -1) for x in range(len(dat[0])-size)]
+    v = list(filter(checkvalid, out))
+    return v
