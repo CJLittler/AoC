@@ -9,17 +9,17 @@ os.chdir('C:/Users/cjlit/OneDrive/Documents/AOC/2022/')
 def getdata(day):
     filepath = 'inputs/day'+ str(day) + '.txt'
     f = open(filepath)
-    dat = f.readlines()
+    dat = f.read().splitlines()
     f.close()
     return dat
 def day1func(dat):
     maxv = [0,0,0]
     current = 0
     for i in dat:
-        if(i == "\n"):
+        if(i == ""):
             current = 0
         else:
-            n = int(i.replace("\n", ""))
+            n = int(i)
             current += n
             if current > maxv[0]:
                 maxv[0] = current
@@ -29,12 +29,6 @@ def day1func(dat):
                 maxv[2] = current
     return(maxv)
 
-def day2inp():
-    filepath = 'inputs/day2.txt'
-    f = open(filepath)
-    dat = f.readlines()
-    f.close()
-    return(dat)
 
 def day2func(dat):
     # A + X = Rock 1, B + Y = Paper 2, C+Z = Scissors
@@ -60,7 +54,7 @@ def day2func2(dat):
     # X lose, y draw, z win
     score = 0
     for i in dat:
-        j = i.replace('\n', '')
+        j = i
         if j[2] == 'X':
             score += 0
             if j[0] == 'A':
@@ -90,8 +84,7 @@ def day2func2(dat):
             
 def day3func(dat):
     tot = 0
-    for i in dat:
-        j = i.replace('\n', '')
+    for j in dat:
         v = int(len(j)/2)
         f = j[:v]
         l = j[v:]
@@ -129,8 +122,7 @@ def day3func2(dat):
 def day4func(dat):
     counter = 0
     counter2 = 0
-    for j in dat:
-        r=j.replace('\n', '')
+    for r in dat:
         l = r.split(',')
         one = l[0].split('-')
         two = l[1].split('-')
@@ -152,9 +144,9 @@ def day4func(dat):
         #else:
         #    print('FALSE: ' + l[0] + ': ' + l[1])
             
-    print(counter2)
+    print([counter,counter2])
     
-def day5func(dat):
+def day5func(dat,part):
     start=dat[0:8]    
     inst=dat[10:]
     locs = [1,5,9,13,17,21,25,29,33]
@@ -167,10 +159,11 @@ def day5func(dat):
         #print(newrow)
         rows.append(newrow)
         
-    def move(rows, rcol, ct, ncol):
+    def move(rows, rcol, ct, ncol,part):
 
         moving=rows[rcol][-ct:]
-        moving#.reverse()
+        if part == 1:
+           moving.reverse()
         rows[rcol]=rows[rcol][:-ct]
         [rows[ncol].append(x) for x in moving]
         
@@ -178,8 +171,8 @@ def day5func(dat):
     for i in inst:
         i.replace('\n', '')
         irow = i.split(' ')
-        rows = move(rows, int(irow[3])-1, int(irow[1]), int(irow[5])-1)
-    return rows
+        rows = move(rows, int(irow[3])-1, int(irow[1]), int(irow[5])-1,part)
+    return [x[-1] for x in rows]
         
 def day6func(dat,part):
     if part == 1:
@@ -199,4 +192,4 @@ def day6func(dat,part):
             return False
     out = [int(find(dat[0],x,size) or -1) for x in range(len(dat[0])-size)]
     v = list(filter(checkvalid, out))
-    return v
+    return min(v)
