@@ -193,3 +193,46 @@ def day6func(dat,part):
     out = [int(find(dat[0],x,size) or -1) for x in range(len(dat[0])-size)]
     v = list(filter(checkvalid, out))
     return min(v)
+
+def day7func(dat, part):
+    def increment(allpaths, path, amount):
+        # Function that loops path within current directory to add the size
+        for p in range(len(path)):
+            allpaths[''.join(path[0:p+1])] += amount
+        return allpaths
+    
+    path= []
+    allpaths = {}
+    size = 0
+    for row in dat:
+        if row[0:7] == '$ cd ..':
+            path = path[:-1]
+        elif row[0:6] == '$ cd /':
+            path = []
+        elif row[0:4] == '$ cd':
+            path.append(row[5:])
+            #print(path)
+        elif row[0:3] == 'dir':
+            allpaths[''.join(path)+row[4:]]=0
+        elif row[0:1] not in ['$', 'd']:
+            amt = row.split(' ')[0]
+            #print(amt + ''.join(path))
+            allpaths = increment(allpaths, path, int(amt))
+            size += int(amt)
+    tot = 0
+    print(size)
+    targetrem = size - 40000000
+    rem=size
+    for x in allpaths.values():
+        if x < 100000 and part == 1:
+            tot += x
+        if x > targetrem and part == 2:
+           rem = min(rem,x)
+            
+    if part == 1:
+        rvalue = tot
+    elif part == 2:
+        rvalue = rem
+    return rvalue
+    
+    
